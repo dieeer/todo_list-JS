@@ -4,31 +4,35 @@ import React, {useState} from 'react'
 function App() {
 
   const [tasks, setTasks] = useState([
-    { name: 'go shopping'},
-    { name: 'clean kitchen'}
+    { name: 'go shopping', isComplete: false},
+    { name: 'clean kitchen', isComplete: false}
   ]);
   const [newTask, setNewTask] = useState("")
 
   const taskNodes = tasks.map((task, index) => {
     return(
-      <li key={index} className ='task'>{task.name}</li>
+      <li key={index} className ={task.isComplete ? 'completed' : 'not-completed'}>
+    <span>{task.name}</span>
+    {task.isComplete ? <span className='completed'>✅</span> : <button onClick={() => completeTask(index)}>complete task</button>}
+    </li>
     )
   })
 
   const handleTaskInput = (event) => {
     setNewTask(event.target.value)
-  }
+  };
 
   const saveNewTask = (event) => {
     event.preventDefault();
     const copyTasks = [...tasks]
-    copyTasks.push({name: newTask})
+    copyTasks.push({name: newTask, isComplete: false})
     setTasks(copyTasks)
     setNewTask("")
-  }
+  };
 
-  const addNewTask = (index) => {
+  const completeTask = (index) => {
     const copyTasks = [...tasks]
+    copyTasks[index].isComplete = true;
     setTasks(copyTasks)
   }
 
